@@ -1,6 +1,11 @@
 # Python
 __pycache__/
 *.py[cod]
+.venv/
+build/
+dist/
+pw-browsers/
+installer/Output/
 *$py.class
 *.so
 .Python
@@ -39,4 +44,3 @@ test-results/
 
 # Logs
 *.log
-

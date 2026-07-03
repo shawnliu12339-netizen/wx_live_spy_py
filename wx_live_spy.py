@@ -20,6 +20,19 @@ import time
 from contextlib import suppress
 from typing import Any, Dict, List
 
+
+
+def _configure_bundled_browser() -> None:
+    """让 PyInstaller 版本使用安装目录中自带的 Chromium。"""
+    if not getattr(sys, "frozen", False):
+        return
+    browser_dir = os.path.join(os.path.dirname(sys.executable), "pw-browsers")
+    if os.path.isdir(browser_dir):
+        os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", browser_dir)
+
+
+_configure_bundled_browser()
+
 from playwright.async_api import Page, Response, async_playwright
 
 DEFAULT_SPY_URL = "https://channels.weixin.qq.com/platform/live/liveBuild"
@@ -27,12 +40,19 @@ DEFAULT_SPY_URL = "https://channels.weixin.qq.com/platform/live/liveBuild"
 logger = logging.getLogger("wx_live_spy")
 
 
+def _default_user_data_dir() -> str:
+    if sys.platform == "win32":
+        base_dir = os.environ.get("LOCALAPPDATA") or os.path.expanduser("~")
+        return os.path.join(base_dir, "WXLiveSpy", "browser-profile")
+    return os.path.join(os.path.expanduser("~"), ".wx_live_spy")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Capture WeChat live danmaku with Playwright.")
     parser.add_argument("--spy-url", default=DEFAULT_SPY_URL, help="登录后需要进入的直播后台地址")
     parser.add_argument(
         "--user-data-dir",
-        default=os.path.join(os.path.expanduser("~"), ".wx_live_spy"),
+        default=_default_user_data_dir(),
         help="Chromium 用户目录，复用登录态",
     )
     parser.add_argument("--headless", action="store_true", help="以 headless 模式运行")
@@ -248,4 +268,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

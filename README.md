@@ -24,6 +24,35 @@
 
 ## 安装依赖
 
+## Windows 安装包
+
+仓库已提供 Windows x64 安装包构建配置。安装包会内置 Python 程序、Playwright 和 Chromium，最终用户不需要单独安装 Python 或浏览器。
+
+### 使用 GitHub Actions 构建（推荐）
+
+1. 将代码推送到 GitHub。
+2. 打开仓库的 **Actions → Build Windows installer → Run workflow**。
+3. 构建完成后，在该任务的 Artifacts 中下载 `WXLiveSpy-Windows-Installer`。
+4. 解压并运行 `WXLiveSpy-Setup-x64.exe`。
+
+推送 `v1.0.0` 形式的标签时，安装包也会自动附加到对应的 GitHub Release。
+
+### 在 Windows 本机构建
+
+需要 Windows 10/11 x64、Python 3.9+ 和 [Inno Setup 6](https://jrsoftware.org/isinfo.php)。在 PowerShell 中运行：
+
+```powershell
+.\build_windows.ps1
+```
+
+生成的安装包位于 `installer\Output\WXLiveSpy-Setup-x64.exe`。如果未安装 Inno Setup，仍会生成 `dist\WXLiveSpy` 免安装目录。
+
+安装后从桌面或开始菜单启动。首次运行会显示 Chromium 窗口，需要微信扫码；登录数据保存在 `%LOCALAPPDATA%\WXLiveSpy\browser-profile`。
+
+> Windows Defender/SmartScreen 可能提示未知发布者，这是未使用代码签名证书造成的。公开分发时建议对安装包签名。
+
+## 开发环境安装依赖
+
 ### 1. 安装 Python 依赖
 
 ```bash
@@ -167,4 +196,3 @@ MIT License
 ## 免责声明
 
 本工具仅供学习和研究使用，请勿用于商业用途或违反微信平台规则的行为。使用本工具产生的任何后果由使用者自行承担。
-
