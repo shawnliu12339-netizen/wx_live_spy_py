@@ -20,9 +20,6 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#MyAppExeName}
 
-[Languages]
-Name: "chinesesimp"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
-
 [Files]
 Source: "..\dist\WXLiveSpy\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
